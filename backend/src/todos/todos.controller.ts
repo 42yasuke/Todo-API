@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { IdParamDto } from './dto/id-param.dto';
 
 @Controller('todos')
 export class TodosController {
@@ -14,8 +24,8 @@ export class TodosController {
   }
 
   @Get(':id')
-  findOne(@Param() params: IdParamDto) {
-    return this.todosService.findOne(params.id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.todosService.findOne(id);
   }
 
   @Post()
@@ -25,13 +35,16 @@ export class TodosController {
   }
 
   @Patch(':id')
-  update(@Param() params: IdParamDto, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todosService.update(params.id, updateTodoDto);
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateTodoDto: UpdateTodoDto,
+  ) {
+    return this.todosService.update(id, updateTodoDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param() params: IdParamDto) {
-    return this.todosService.remove(params.id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.todosService.remove(id);
   }
 }

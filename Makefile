@@ -26,4 +26,20 @@ re: fclean start
 logs:
 	@docker-compose logs -f
 
+# === TESTS ===
+testB: test-backend
+
+test-backend:
+	@echo "🧪 Lancement des tests du backend (Jest)..."
+	@npm test --prefix backend
+	@echo "✅ Tests terminés."
+
+test-backend-watch:
+	@echo "👀 Lancement des tests du backend en mode watch..."
+	@npm run test:watch --prefix backend
+
+test-backend-cov:
+	@echo "📊 Lancement des tests avec couverture de code..."
+	@npm run test:cov --prefix backend
+
 .PHONY: install start stop fclean re logs
